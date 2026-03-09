@@ -60,9 +60,11 @@ def parse_digest(path: Path) -> Digest:
             continue
         heading = sec_lines[0].strip()
         body = '\n'.join(sec_lines[1:])
+
         def field(name: str) -> str:
             m = re.search(rf"- {re.escape(name)}: (.+)", body)
             return m.group(1).strip() if m else ''
+
         items.append({
             'heading': heading,
             'category': field('Category'),
@@ -90,17 +92,26 @@ def page(title: str, body: str, active: str = '') -> str:
   <meta charset=\"utf-8\">
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
   <title>{html.escape(title)}</title>
+  <meta name=\"description\" content=\"A lightweight, readable archive for Jarvis RSS digests.\">
+  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">
+  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>
+  <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap\" rel=\"stylesheet\">
   <link rel=\"stylesheet\" href=\"/assets/style.css\">
 </head>
 <body>
   <div class=\"wrap\">
     <header class=\"hero\">
-      <p class=\"eyebrow\">Jarvis RSS Digest</p>
-      <h1>{html.escape(title)}</h1>
-      <p class=\"sub\">A tiny static archive for Bobby's RSS digests.</p>
+      <div class=\"hero-copy\">
+        <p class=\"eyebrow\">Jarvis RSS Digest</p>
+        <h1>{html.escape(title)}</h1>
+        <p class=\"sub\">A lightweight, readable archive for Bobby's RSS digests — simple enough to stay fast, polished enough to actually enjoy browsing.</p>
+      </div>
       {nav}
     </header>
-    {body}
+    <main class=\"stack\">
+      {body}
+    </main>
+    <p class=\"footer-note\">Static HTML, local markdown, zero framework drama.</p>
   </div>
 </body>
 </html>
@@ -110,24 +121,43 @@ def page(title: str, body: str, active: str = '') -> str:
 def render_digest(d: Digest) -> str:
     cards = []
     for item in d.items:
-        meta = ' · '.join(x for x in [item['category'], item['feed'], item['published']] if x)
+        tags = ''.join(
+            f"<span class=\"pill\">{html.escape(value)}</span>"
+            for value in [item['category'], item['feed'], item['published']]
+            if value
+        )
         summary = f"<p>{html.escape(item['summary'])}</p>" if item['summary'] else ''
-        link = f"<p><a href=\"{html.escape(item['link'])}\">Open source ↗</a></p>" if item['link'] else ''
+        link = (
+            f"<p><a class=\"source-link\" href=\"{html.escape(item['link'])}\">Open source <span aria-hidden=\"true\">↗</span></a></p>"
+            if item['link'] else ''
+        )
         cards.append(f"""
         <article class=\"card item\">
           <h3>{html.escape(item['heading'])}</h3>
-          <p class=\"meta\">{html.escape(meta)}</p>
+          <div class=\"meta-line\">{tags}</div>
           {summary}
           {link}
         </article>
         """)
+
+    intro = f"<p class=\"digest-intro\">{html.escape(d.intro)}</p>" if d.intro else ''
     body = f"""
     <section class=\"card digest-meta\">
-      <p><strong>Generated</strong>: {html.escape(d.generated)}</p>
-      <p><strong>Slot</strong>: {html.escape(d.slot)}</p>
-      <p><strong>Lookback</strong>: {html.escape(d.lookback)}</p>
-      <p><strong>Items</strong>: {d.item_count}</p>
-      <p><strong>Archive source</strong>: <code>{html.escape(d.rel_path)}</code></p>
+      <div class=\"kicker-row\">
+        <div>
+          <p class=\"eyebrow\">Digest overview</p>
+          <h2>{html.escape(d.title)}</h2>
+          {intro}
+        </div>
+        <a class=\"cta-link\" href=\"/archives/\">Back to archive</a>
+      </div>
+      <div class=\"stats\">
+        <div class=\"stat\"><span class=\"stat-label\">Generated</span><span class=\"stat-value\">{html.escape(d.generated)}</span></div>
+        <div class=\"stat\"><span class=\"stat-label\">Slot</span><span class=\"stat-value\">{html.escape(d.slot)}</span></div>
+        <div class=\"stat\"><span class=\"stat-label\">Lookback</span><span class=\"stat-value\">{html.escape(d.lookback)}</span></div>
+        <div class=\"stat\"><span class=\"stat-label\">Items</span><span class=\"stat-value\">{d.item_count}</span></div>
+      </div>
+      <p class=\"archive-note\">Source file: <code>{html.escape(d.rel_path)}</code></p>
     </section>
     <section class=\"list\">{''.join(cards)}</section>
     """
@@ -142,11 +172,22 @@ def render_home(current: Digest | None, digests: list[Digest]) -> str:
             if item['link'] else f"<li>{html.escape(item['heading'])}</li>"
             for item in current.items[:8]
         )
+        intro = f"<p class=\"digest-intro\">{html.escape(current.intro)}</p>" if current.intro else ''
         latest = f"""
         <section class=\"card latest\">
-          <div class=\"section-head\"><h2>Latest digest</h2><a href=\"/archives/{html.escape(current.slug)}\">Open full digest</a></div>
-          <p class=\"meta\">{html.escape(current.generated)} · {html.escape(current.slot)} · {current.item_count} items</p>
-          <p>{html.escape(current.intro)}</p>
+          <div class=\"section-head\">
+            <div>
+              <p class=\"eyebrow\">Latest issue</p>
+              <h2>Latest digest</h2>
+            </div>
+            <a href=\"/archives/{html.escape(current.slug)}\">Open full digest</a>
+          </div>
+          <div class=\"meta-line\">
+            <span class=\"pill\">{html.escape(current.generated)}</span>
+            <span class=\"pill\">{html.escape(current.slot)}</span>
+            <span class=\"pill\">{current.item_count} items</span>
+          </div>
+          {intro}
           <ul class=\"latest-list\">{items}</ul>
         </section>
         """
@@ -158,14 +199,21 @@ def render_home(current: Digest | None, digests: list[Digest]) -> str:
     {latest}
     <section class=\"grid\">
       <article class=\"card\">
-        <h2>Archive</h2>
-        <p>Each digest is sourced from local markdown files under <code>rss-digest/archives/</code>.</p>
+        <div class=\"section-head\">
+          <div>
+            <p class=\"eyebrow\">Browse</p>
+            <h2>Archive</h2>
+          </div>
+          <a href=\"/archives/\">See all digests</a>
+        </div>
+        <p>Each issue is generated from local markdown under <code>rss-digest/archives/</code>, then published as a lightweight static archive.</p>
         <ul class=\"archive-list\">{archive_items}</ul>
       </article>
       <article class=\"card\">
+        <p class=\"eyebrow\">About</p>
         <h2>How this works</h2>
-        <p>The local RSS workflow now saves every sent digest as markdown. This repo copies those archives and rebuilds a plain static site for GitHub Pages.</p>
-        <p>Low drama. No framework. Just files.</p>
+        <p>The RSS workflow stores every sent digest as markdown. This repo syncs those files, rebuilds the site, and deploys to GitHub Pages.</p>
+        <p>Fast to load, easy to maintain, pleasant to read.</p>
       </article>
     </section>
     """
@@ -179,7 +227,13 @@ def render_archives_index(digests: list[Digest]) -> str:
     )
     body = f"""
     <section class=\"card\">
-      <h2>All archived digests</h2>
+      <div class=\"section-head\">
+        <div>
+          <p class=\"eyebrow\">Archive</p>
+          <h2>All archived digests</h2>
+        </div>
+      </div>
+      <p>Every published issue, in reverse chronological order.</p>
       <ul class=\"archive-list\">{items}</ul>
     </section>
     """

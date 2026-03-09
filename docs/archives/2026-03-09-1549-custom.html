@@ -4,14 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Jarvis RSS Digest · RSS 摘要</title>
+  <meta name="description" content="A lightweight, readable archive for Jarvis RSS digests.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
   <div class="wrap">
     <header class="hero">
-      <p class="eyebrow">Jarvis RSS Digest</p>
-      <h1>Jarvis RSS Digest · RSS 摘要</h1>
-      <p class="sub">A tiny static archive for Bobby's RSS digests.</p>
+      <div class="hero-copy">
+        <p class="eyebrow">Jarvis RSS Digest</p>
+        <h1>Jarvis RSS Digest · RSS 摘要</h1>
+        <p class="sub">A lightweight, readable archive for Bobby's RSS digests — simple enough to stay fast, polished enough to actually enjoy browsing.</p>
+      </div>
       
     <nav class="nav">
       <a href="/" >Home</a>
@@ -20,44 +26,57 @@
     </nav>
     
     </header>
-    
+    <main class="stack">
+      
     <section class="card digest-meta">
-      <p><strong>Generated</strong>: 2026-03-09 15:49 CDT</p>
-      <p><strong>Slot</strong>: custom</p>
-      <p><strong>Lookback</strong>: 72h</p>
-      <p><strong>Items</strong>: 4</p>
-      <p><strong>Archive source</strong>: <code>2026/03/2026-03-09-1549-custom.md</code></p>
+      <div class="kicker-row">
+        <div>
+          <p class="eyebrow">Digest overview</p>
+          <h2>Jarvis RSS Digest · RSS 摘要</h2>
+          <p class="digest-intro">过去 72 小时里值得看的一些更新：</p>
+        </div>
+        <a class="cta-link" href="/archives/">Back to archive</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="stat-label">Generated</span><span class="stat-value">2026-03-09 15:49 CDT</span></div>
+        <div class="stat"><span class="stat-label">Slot</span><span class="stat-value">custom</span></div>
+        <div class="stat"><span class="stat-label">Lookback</span><span class="stat-value">72h</span></div>
+        <div class="stat"><span class="stat-label">Items</span><span class="stat-value">4</span></div>
+      </div>
+      <p class="archive-note">Source file: <code>2026/03/2026-03-09-1549-custom.md</code></p>
     </section>
     <section class="list">
         <article class="card item">
           <h3>1. Granite 4.0 1B Speech: Compact, Multilingual, and Built for the Edge</h3>
-          <p class="meta">AI · Hugging Face Blog · 2026-03-09 13:36 CDT</p>
+          <div class="meta-line"><span class="pill">AI</span><span class="pill">Hugging Face Blog</span><span class="pill">2026-03-09 13:36 CDT</span></div>
           
-          <p><a href="https://huggingface.co/blog/ibm-granite/granite-4-speech">Open source ↗</a></p>
+          <p><a class="source-link" href="https://huggingface.co/blog/ibm-granite/granite-4-speech">Open source <span aria-hidden="true">↗</span></a></p>
         </article>
         
         <article class="card item">
           <h3>2. OpenAI to acquire Promptfoo</h3>
-          <p class="meta">AI · OpenAI Blog · 2026-03-09 05:00 CDT</p>
+          <div class="meta-line"><span class="pill">AI</span><span class="pill">OpenAI Blog</span><span class="pill">2026-03-09 05:00 CDT</span></div>
           <p>OpenAI is acquiring Promptfoo, an AI security platform that helps enterprises identify and remediate vulnerabilities in AI systems during development.</p>
-          <p><a href="https://openai.com/index/openai-to-acquire-promptfoo">Open source ↗</a></p>
+          <p><a class="source-link" href="https://openai.com/index/openai-to-acquire-promptfoo">Open source <span aria-hidden="true">↗</span></a></p>
         </article>
         
         <article class="card item">
           <h3>3. Ulysses Sequence Parallelism: Training with Million-Token Contexts</h3>
-          <p class="meta">AI · Hugging Face Blog · 2026-03-08 19:00 CDT</p>
+          <div class="meta-line"><span class="pill">AI</span><span class="pill">Hugging Face Blog</span><span class="pill">2026-03-08 19:00 CDT</span></div>
           
-          <p><a href="https://huggingface.co/blog/ulysses-sp">Open source ↗</a></p>
+          <p><a class="source-link" href="https://huggingface.co/blog/ulysses-sp">Open source <span aria-hidden="true">↗</span></a></p>
         </article>
         
         <article class="card item">
           <h3>4. LeRobot v0.5.0: Scaling Every Dimension</h3>
-          <p class="meta">AI · Hugging Face Blog · 2026-03-08 19:00 CDT</p>
+          <div class="meta-line"><span class="pill">AI</span><span class="pill">Hugging Face Blog</span><span class="pill">2026-03-08 19:00 CDT</span></div>
           
-          <p><a href="https://huggingface.co/blog/lerobot-release-v050">Open source ↗</a></p>
+          <p><a class="source-link" href="https://huggingface.co/blog/lerobot-release-v050">Open source <span aria-hidden="true">↗</span></a></p>
         </article>
         </section>
     
+    </main>
+    <p class="footer-note">Static HTML, local markdown, zero framework drama.</p>
   </div>
 </body>
 </html>

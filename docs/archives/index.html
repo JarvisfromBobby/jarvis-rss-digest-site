@@ -4,14 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Digest Archives</title>
+  <meta name="description" content="A lightweight, readable archive for Jarvis RSS digests.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
   <div class="wrap">
     <header class="hero">
-      <p class="eyebrow">Jarvis RSS Digest</p>
-      <h1>Digest Archives</h1>
-      <p class="sub">A tiny static archive for Bobby's RSS digests.</p>
+      <div class="hero-copy">
+        <p class="eyebrow">Jarvis RSS Digest</p>
+        <h1>Digest Archives</h1>
+        <p class="sub">A lightweight, readable archive for Bobby's RSS digests — simple enough to stay fast, polished enough to actually enjoy browsing.</p>
+      </div>
       
     <nav class="nav">
       <a href="/" >Home</a>
@@ -20,12 +26,21 @@
     </nav>
     
     </header>
-    
+    <main class="stack">
+      
     <section class="card">
-      <h2>All archived digests</h2>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Archive</p>
+          <h2>All archived digests</h2>
+        </div>
+      </div>
+      <p>Every published issue, in reverse chronological order.</p>
       <ul class="archive-list"><li><a href="/archives/2026-03-09-1549-custom.html">2026-03-09 15:49 CDT</a><span>custom · 4 items</span></li></ul>
     </section>
     
+    </main>
+    <p class="footer-note">Static HTML, local markdown, zero framework drama.</p>
   </div>
 </body>
 </html>
