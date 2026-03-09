@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 SOURCE_ARCHIVES = Path("/home/difanjia/.openclaw/rss-digest/archives")
 CONTENT_ARCHIVES = ROOT / "content" / "archives"
-SITE_DIR = ROOT / "site"
+SITE_DIR = ROOT / "docs"
 ASSETS_DIR = ROOT / "assets"
 
 
